@@ -1,0 +1,26 @@
+# Docker Compose for Anti-Spam Intelligent Project
+# BMSecurity - Email Spam Detection
+
+services:
+  # Jupyter Notebook for development
+  jupyter:
+    build: .
+    container_name: antispam-jupyter
+    ports:
+      - "8888:8888"
+    volumes:
+      - .:/app
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+    command: python -m jupyter notebook --ip=0.0.0.0 --port=8888 --no-browser --allow-root --NotebookApp.token=''
+
+  # Streamlit app for spam detection
+  streamlit:
+    build: .
+    container_name: antispam-streamlit
+    ports:
+      - "8501:8501"
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: streamlit run src/app.py --server.port=8501 --server.address=0.0.0.0
